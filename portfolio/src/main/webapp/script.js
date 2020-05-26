@@ -19,10 +19,24 @@ function addRandomGreeting() {
   const greetings =
       ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
+//   Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
-  // Add it to the page.
+//   Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+}
+
+function addRandomFact() {
+    const facts = 
+    ['I have 2 dogs, Olive and Bella', 'I am turning 20 on June 30th', 'I live on a farm',
+    'I switched my major from Biomedical Engineering to CS at the end of my first year',
+    'I have never been to the West Coast', 'My dogs have an instagram: @olive_and_bella'];
+
+    //Pick a random fact
+    const fact = facts[Math.floor(Math.random() * facts.length)];
+
+    //Add it to the page
+    const factContainer = document.getElementById('fact-container');
+    factContainer.innerText = fact;
 }
