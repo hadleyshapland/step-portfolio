@@ -1,59 +1,59 @@
 #content {
-    padding-left: 20px;
-    margin-left: 200px;
+  padding-left: 20px;
+  margin-left: 200px;
 }
 
 * {
-    box-sizing: border-box;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+  box-sizing: border-box;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 #greeting-container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 body {
-    margin: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    color: white;
-    position: center;
-    background-color: mediumpurple;
-    background-image: linear-gradient(to bottom, slateblue, mediumpurple);
+  margin: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: white;
+  position: center;
+  background-color: mediumpurple;
+  background-image: linear-gradient(to bottom, slateblue, mediumpurple);
 }
 
 h1 {
-    font-weight: bold;
-    color: white;
-    position: center;
+  font-weight: bold;
+  color: white;
+  position: center;
 }
 
 a {
-    text-decoration: none;
-    color: lightgray;
-    position: center;
+  text-decoration: none;
+  color: lightgray;
+  position: center;
 }
 
 .sidenav {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: lightgray;
-    overflow-x: hidden;
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: lightgray;
+  overflow-x: hidden;
 }
 
 .sidenav a {
-    color: mediumpurple;
-    padding: 16px;
-    text-decoration: none;
-    display: block;
+  color: mediumpurple;
+  padding: 16px;
+  text-decoration: none;
+  display: block;
 }
 
 .sidenav a:hover {
-    background-color: slateblue;
-    color: lightgray;
+  background-color: slateblue;
+  color: lightgray;
 }
