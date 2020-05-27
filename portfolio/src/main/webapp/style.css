@@ -1,56 +1,56 @@
-#content {
-  padding-left: 20px;
-  margin-left: 200px;
-}
-
 * {
   box-sizing: border-box;
   font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+a {
+  color: lightgray;
+  position: center;
+  text-decoration: none;
+}
+
+body {
+  background-color: mediumpurple;
+  background-image: linear-gradient(to bottom, slateblue, mediumpurple);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  margin: 0;
+  position: center; 
+}
+
+#content {
+  margin-left: 200px;
+  padding-left: 20px;
 }
 
 #greeting-container {
   margin-top: 20px;
 }
 
-body {
-  margin: 0;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  color: white;
-  position: center;
-  background-color: mediumpurple;
-  background-image: linear-gradient(to bottom, slateblue, mediumpurple);
-}
-
 h1 {
-  font-weight: bold;
   color: white;
-  position: center;
-}
-
-a {
-  text-decoration: none;
-  color: lightgray;
+  font-weight: bold;
   position: center;
 }
 
 .sidenav {
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
   background-color: lightgray;
+  height: 100%;
+  left: 0;
   overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  width: 200px;
+  z-index: 1;
 }
 
 .sidenav a {
   color: mediumpurple;
+  display: block;
   padding: 16px;
   text-decoration: none;
-  display: block;
 }
 
 .sidenav a:hover {
