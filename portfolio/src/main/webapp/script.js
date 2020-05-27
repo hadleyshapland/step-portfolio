@@ -17,7 +17,7 @@ function addRandomGreeting() {
     'Hello world!', 
     '¡Hola Mundo!', 
     '你好，世界！', 
-    'Bonjour le monde!'
+    'Bonjour le monde!',
   ];
 
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -33,7 +33,7 @@ function addRandomFact() {
     'I live on a farm',
     'I switched my major from Biomedical Engineering to CS at the end of my first year',
     'I have never been to the West Coast', 
-    'My dogs have an instagram: @olive_and_bella'
+    'My dogs have an instagram: @olive_and_bella',
   ];
 
   const fact = facts[Math.floor(Math.random() * facts.length)];
