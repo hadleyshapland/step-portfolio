@@ -16,20 +16,6 @@ $(function(){
   $("#sidebar").load("sidebar.html");
 });
 
-function addRandomGreeting() {
-  const greetings = [
-    'Hello world!', 
-    '¡Hola Mundo!', 
-    '你好，世界！', 
-    'Bonjour le monde!',
-  ];
-
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
 function addRandomFact() {
   const facts = [
     'I have 2 dogs, Olive and Bella', 
@@ -38,6 +24,7 @@ function addRandomFact() {
     'I switched my major from Biomedical Engineering to CS at the end of my first year',
     'I have never been to the West Coast', 
     'My dogs have an instagram: @olive_and_bella',
+    'I love Harry Potter',
   ];
 
   const fact = facts[Math.floor(Math.random() * facts.length)];
