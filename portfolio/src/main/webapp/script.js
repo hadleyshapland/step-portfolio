@@ -13,7 +13,7 @@
 // limitations under the License.
 
 $(function(){
-  $("#commonlogic").load("commonlogic.html");
+  $("#sidebar").load("sidebar.html");
 });
 
 function addRandomGreeting() {
