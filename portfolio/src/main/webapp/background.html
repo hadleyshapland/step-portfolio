@@ -5,26 +5,28 @@
     <title>Hadley Shapland</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+
+    <!-- include jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      $(function(){
+        $("#commonlogic").load("commonlogic.html");
+      });
+    </script>
   </head>
 
   <body>
-    <!-- SIDEBAR -->
-      <div class="sidenav">
-        <a href="index.html">Home</a>
-        <a href="background.html">Background</a>
-        <a href="experience.html">Experience</a>
-        <a href="funfacts.html">Fun Facts</a>
-    </div>
-    <!-- END SIDEBAR -->
+    <div id="commonlogic"></div>
 
     <div id="content">
-        <h1>BACKGROUND</h1>
-        <p>My name is Hadley Shapland and I am a 
-        <a href="https://buildyourfuture.withgoogle.com/programs/step/">STEP Intern</a> 
-        at Google. I am a Computer Science and Math major at Vanderbilt University and will 
-        be starting my junior year this fall. I am from Champaign, IL and ...</p>
+      <h1>BACKGROUND</h1>
+      <p>My name is Hadley Shapland and I am a 
+      <a href="https://buildyourfuture.withgoogle.com/programs/step/">STEP Intern</a> 
+      at Google. I am a Computer Science and Math major at Vanderbilt University and will 
+      be starting my junior year this fall. I am from Champaign, IL and ...</p>
 
-        <img src="images/kip.jpg" alt="Hadley and Kip"/>
+      <img src="images/kip.jpg" alt="Hadley and Kip"/>
     </div>
   </body>
 </html>

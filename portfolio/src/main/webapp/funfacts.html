@@ -5,17 +5,19 @@
     <title>Hadley Shapland</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+
+    <!-- include jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      $(function(){
+        $("#commonlogic").load("commonlogic.html");
+      });
+    </script>
   </head>
 
   <body>
-    <!-- SIDEBAR -->
-    <div class="sidenav">
-      <a href="index.html">Home</a>
-      <a href="background.html">Background</a>
-      <a href="experience.html">Experience</a>
-      <a href="funfacts.html">Fun Facts</a>
-    </div>
-    <!-- END SIDEBAR -->
+    <div id="commonlogic"></div>
 
     <div id="content">
       <h1>FUN FACTS</h1>
