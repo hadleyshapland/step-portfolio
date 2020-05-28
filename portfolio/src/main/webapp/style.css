@@ -20,13 +20,22 @@ body {
   position: center; 
 }
 
+.button {
+    background-color: lightgray;
+    border: 2px solid mediumpurple;
+    color: mediumpurple;
+    font-size: 24px;
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: slateblue;
+    color: white;
+}
+
 #content {
   margin-left: 200px;
   padding-left: 20px;
-}
-
-#greeting-container {
-  margin-top: 20px;
 }
 
 h1 {
