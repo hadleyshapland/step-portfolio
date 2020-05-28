@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+$(function(){
+  $("#sidebar").load("sidebar.html");
+});
+
 function addRandomGreeting() {
   const greetings = [
     'Hello world!', 
