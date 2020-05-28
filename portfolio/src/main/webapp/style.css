@@ -35,6 +35,10 @@ h1 {
   position: center;
 }
 
+.image1 {
+    border-radius: 50%;
+}
+
 .sidenav {
   background-color: lightgray;
   height: 100%;
