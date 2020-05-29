@@ -13,7 +13,7 @@
                 this.pathname.replace(/^\//, "") &&
             location.hostname == this.hostname
         ) {
-            var target = $(this.hash);
+            const target = $(this.hash);
             target = target.length
                 ? target
                 : $("[name=" + this.hash.slice(1) + "]");
