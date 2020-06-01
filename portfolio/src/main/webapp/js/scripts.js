@@ -40,3 +40,12 @@
         target: "#sideNav",
     });
 })(jQuery); // End of use strict
+
+/**
+ * Function to fetch a message from server and convert it to text
+ */
+async function getMessage() {
+  const response = await fetch('/data');
+  const message = await response.text();
+  document.getElementById('message-container').innerText = message;
+}
