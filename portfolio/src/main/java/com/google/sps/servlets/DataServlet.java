@@ -14,7 +14,7 @@
 
 package com.google.sps.servlets;
 
-import java.util.*;
+import java.util.Vector;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,6 +48,7 @@ public class DataServlet extends HttpServlet {
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
+    
     if (value == null) {
       return defaultValue;
     }
