@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    //data structure to hold all comments:
-    private Vector allComments = new Vector();
+  //data structure to hold all comments:
+  private Vector allComments = new Vector();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -35,7 +35,7 @@ public class DataServlet extends HttpServlet {
     String comment = getParameter(request, "user-comment", "");
 
     if(comment != "") {
-        allComments.add(comment);
+      allComments.add(comment);
     }
 
     response.setContentType("text/html;");
