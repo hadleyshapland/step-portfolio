@@ -12,7 +12,7 @@
     <link rel="manifest" href="assets/img/site.webmanifest">
     <link href="css/styles.css" rel="stylesheet">
   </head>
-  <body id="page-top">
+  <body id="page-top" onload="loadComments()">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top"
@@ -172,17 +172,22 @@
     </div>
     <!-- Servlet-->
     <section class="resume-section" id="comments">
+      
       <div class="resume-section-content">
-        <h2 class="mb-5">Comments</h2>
-        <form action="/data" method="POST">
-            <p>Leave a comment:</p>
-            <input type="text" name="user-comment">
+
+        <h2 class="mb-5">Leave a comment</h2>
+        <form action="/new-comment" method="POST">
+            <input type="text" name="user-name" placeholder="Name..."/>
             <br><br>
-
-            <input type="submit" />
+            <input type="text" name="user-text" placeholder="Comment..."/>
+            <br><br>
+            <!-- <input type="submit" /> -->
+            <button> Submit</button>
         </form>
+        <hr>
+        <h3>Comment History:</h3>
+        <ul id="comment-list"></ul>
 
-        <div id="message-container"></div>
       </div>
     </section>
 

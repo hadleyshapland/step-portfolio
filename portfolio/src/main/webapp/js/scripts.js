@@ -13,7 +13,7 @@
                 this.pathname.replace(/^\//, "") &&
             location.hostname == this.hostname
         ) {
-            const target = $(this.hash);
+            var target = $(this.hash);
             target = target.length
                 ? target
                 : $("[name=" + this.hash.slice(1) + "]");
@@ -41,11 +41,22 @@
     });
 })(jQuery); // End of use strict
 
-/**
- * Function to fetch a message from server and convert it to text
- */
-async function getMessage() {
-  const response = await fetch('/data');
-  const message = await response.text();
-  document.getElementById('message-container').innerText = message;
+function loadComments() {
+    fetch('/list-comments').then(response => response.json()).then((comments) => {
+        const commentListElement = document.getElementById('comment-list');
+        comments.forEach((comment) => {
+            commentListElement.appendChild(createCommentElement(comment));
+        })
+    });
+}
+
+function createCommentElement(comment) {
+    const commentElement = document.createElement('li');
+    commentElement.className = 'task';
+
+    const textElement = document.createElement('span');
+    textElement.innerText = comment.text;
+
+    taskElement.appendChild(textElement);
+    return taskElement;
 }
