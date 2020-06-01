@@ -14,7 +14,7 @@
 
 package com.google.sps.servlets;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   //data structure to hold all comments:
-  private Vector allComments = new Vector();
+  private ArrayList<String> allComments = new ArrayList<String>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
