@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import java.util.ArrayList;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +25,33 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  //data structure to hold all comments:
+  private ArrayList<String> allComments = new ArrayList<String>();
+
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    //get the input from the form
+    String comment = getParameter(request, "user-comment", "");
+
+    if(comment != "") {
+      allComments.add(comment);
+    }
+
     response.setContentType("text/html;");
-    response.getWriter().println("Hello! -Hadley");
+    response.sendRedirect("/index.html#comments");    
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
