@@ -61,7 +61,8 @@ function createCommentElement(comment) {
     commentElement.className = 'comment';
 
     const textElement = document.createElement('span');
-    textElement.innerText = comment.text + " - " + comment.name + "    ";
+    const date = new Date(comment.timestamp);
+    textElement.innerText = comment.text + " - " + comment.name + " on " + date;
 
     const deleteButtonElement = document.createElement('button');
     deleteButtonElement.innerText = 'X';
