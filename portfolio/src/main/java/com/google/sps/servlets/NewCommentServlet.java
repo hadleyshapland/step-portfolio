@@ -17,7 +17,7 @@ public class NewCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
     String name = getParameter(request, "user-name", "Anonymous");
-    String text = getParameter(request, "user-text", "");
+    String text = getParameter(request, "user-text", "[blank]");
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
