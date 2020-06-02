@@ -8,19 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 
 /** Servlet responsible for creating new comments. */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
 
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-    System.out.println("beginning of new comment");
-
-    
     
     String name = getParameter(request, "user-name", "Anonymous");
     String text = getParameter(request, "user-text", "");
@@ -45,7 +39,7 @@ public class NewCommentServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     
-    if (value == null) {
+    if (value == "") {
       return defaultValue;
     }
     return value;

@@ -41,22 +41,29 @@
     });
 })(jQuery); // End of use strict
 
+
 function loadComments() {
-    fetch('/list-comments').then(response => response.json()).then((comments) => {
+    fetch('/list-comments')
+    .then(response => response.json())
+    .then((comments) => 
+    {
         const commentListElement = document.getElementById('comment-list');
-        comments.forEach((comment) => {
+        comments.forEach((comment) => 
+        {
             commentListElement.appendChild(createCommentElement(comment));
         })
     });
 }
 
+
 function createCommentElement(comment) {
     const commentElement = document.createElement('li');
-    commentElement.className = 'task';
+    commentElement.className = 'comment';
 
     const textElement = document.createElement('span');
-    textElement.innerText = comment.text;
+    textElement.innerText = comment.text + " - " + comment.name;
 
-    taskElement.appendChild(textElement);
-    return taskElement;
+    commentElement.appendChild(textElement);
+
+    return commentElement;
 }

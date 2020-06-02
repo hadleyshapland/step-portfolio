@@ -22,6 +22,7 @@ public class ListCommentsServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -41,7 +42,6 @@ public class ListCommentsServlet extends HttpServlet {
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println("at end of listcommments");
     response.getWriter().println(gson.toJson(comments));
   }
 }
