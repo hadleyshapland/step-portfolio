@@ -39,7 +39,7 @@ public class NewCommentServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     
-    if (value == "") {
+    if (value.equals("")) {
       return defaultValue;
     }
     return value;
