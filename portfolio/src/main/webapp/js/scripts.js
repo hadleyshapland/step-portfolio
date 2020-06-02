@@ -61,13 +61,12 @@ function createCommentElement(comment) {
     commentElement.className = 'comment';
 
     const textElement = document.createElement('span');
-    textElement.innerText = comment.text + " - " + comment.name;
+    textElement.innerText = comment.text + " - " + comment.name + "    ";
 
     const deleteButtonElement = document.createElement('button');
-    deleteButtonElement.innerText = 'Delete';
+    deleteButtonElement.innerText = 'X';
     deleteButtonElement.addEventListener('click', () => {
         deleteComment(comment);
-
         commentElement.remove();
     });
 
