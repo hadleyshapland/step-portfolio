@@ -32,10 +32,23 @@ public class CommentServlet extends HttpServlet {
     commentEntity.setProperty("text", text);
     commentEntity.setProperty("timestamp", timestamp);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    writeToDatabase(commentEntity);
 
     response.sendRedirect("/index.html#comments");
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    
+    if (value.equals("")) {
+      return defaultValue;
+    }
+    return value;
+  }
+
+  private void writeToDatabase(Entity toWrite) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(toWrite);
   }
 
   @Override
@@ -49,20 +62,9 @@ public class CommentServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(comments));
   }
 
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    
-    if (value.equals("")) {
-      return defaultValue;
-    }
-    return value;
-  }
-
   private List<Comment> getComments() {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    PreparedQuery results = getFromDatabase(query);
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
@@ -76,5 +78,11 @@ public class CommentServlet extends HttpServlet {
     }
 
     return comments;
+  }
+
+  private PreparedQuery getFromDatabase(Query query) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    return results;
   }
 }
