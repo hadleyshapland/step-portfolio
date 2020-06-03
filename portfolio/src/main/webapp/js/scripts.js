@@ -13,7 +13,7 @@
                 this.pathname.replace(/^\//, "") &&
             location.hostname == this.hostname
         ) {
-            const target = $(this.hash);
+            let target = $(this.hash);
             target = target.length
                 ? target
                 : $("[name=" + this.hash.slice(1) + "]");
@@ -41,11 +41,45 @@
     });
 })(jQuery); // End of use strict
 
-/**
- * Function to fetch a message from server and convert it to text
- */
-async function getMessage() {
-  const response = await fetch('/data');
-  const message = await response.text();
-  document.getElementById('message-container').innerText = message;
+
+function loadComments() {
+    fetch('/comments')
+    .then(response => response.json())
+    .then((comments) => 
+    {
+        const commentListElement = document.getElementById('comment-list');
+        comments.forEach((comment) => 
+        {
+            commentListElement.appendChild(createCommentElement(comment));
+        })
+    });
+}
+
+
+function createCommentElement(comment) {
+    const commentElement = document.createElement('li');
+    commentElement.className = 'comment';
+
+    const textElement = document.createElement('span');
+    const date = new Date(comment.timestamp);
+    textElement.innerText = comment.text + " - " + comment.name + " on " + date;
+
+    const deleteButtonElement = document.createElement('button');
+    deleteButtonElement.innerText = 'X';
+    deleteButtonElement.addEventListener('click', () => {
+        deleteComment(comment.id);
+        commentElement.remove();
+    });
+
+    commentElement.appendChild(textElement);
+    commentElement.appendChild(deleteButtonElement);
+
+    return commentElement;
+}
+
+/** Tells the server to delete the comment. */
+function deleteComment(id) {
+  const params = new URLSearchParams();
+  params.append('id', id);
+  fetch('/delete-comment', {method: 'POST', body: params});
 }
