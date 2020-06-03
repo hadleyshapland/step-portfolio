@@ -49,10 +49,6 @@ public class CommentServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(comments));
   }
 
-  /**
-   * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
-   */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     
@@ -62,7 +58,7 @@ public class CommentServlet extends HttpServlet {
     return value;
   }
 
-  public List<Comment> getComments() {
+  private List<Comment> getComments() {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
