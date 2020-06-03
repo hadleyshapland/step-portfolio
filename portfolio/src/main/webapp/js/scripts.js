@@ -43,7 +43,7 @@
 
 
 function loadComments() {
-    fetch('/list-comments')
+    fetch('/comments')
     .then(response => response.json())
     .then((comments) => 
     {

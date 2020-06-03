@@ -16,9 +16,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for listing comments. */
-@WebServlet("/list-comments")
-public class ListCommentsServlet extends HttpServlet {
+/** Servlet responsible for creating new comments AND listing comments. */
+@WebServlet("/comments")
+public class CommentServlet extends HttpServlet {
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    String name = getParameter(request, "user-name", "Anonymous");
+    String text = getParameter(request, "user-text", "[blank]");
+    long timestamp = System.currentTimeMillis();
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    response.sendRedirect("/index.html#comments");
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -29,6 +47,19 @@ public class ListCommentsServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    
+    if (value.equals("")) {
+      return defaultValue;
+    }
+    return value;
   }
 
   public List<Comment> getComments() {
