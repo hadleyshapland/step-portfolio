@@ -44,10 +44,6 @@
 
 function loadComments() {
   let num = document.getElementById("number").value;
-  if (num == null) {
-    num = "5";
-  }
-
   fetch('/comments?number-comments=' + num)
   .then(response => response.json())
   .then((comments) => 
