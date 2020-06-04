@@ -9,7 +9,6 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
-import java.lang.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 
 /** Servlet responsible for creating new comments AND listing comments. */
 @WebServlet("/comments")
@@ -44,7 +42,7 @@ public class CommentServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     
-    if (value.equals("") || value == null) {
+    if (value.equals("")) {
       return defaultValue;
     }
     return value;
@@ -58,14 +56,14 @@ public class CommentServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int commentLimit = Integer.parseInt(request.getParameter("number-comments"));
-    List<Comment> comments = getComments(request, commentLimit);
+    List<Comment> comments = getComments(commentLimit);
 
     Gson gson = new Gson();
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));
   }
 
-  private List<Comment> getComments(HttpServletRequest request, int commentLimit) {
+  private List<Comment> getComments(int commentLimit) {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = getFromDatabase(query);
 
