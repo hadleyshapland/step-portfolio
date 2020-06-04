@@ -56,12 +56,27 @@ public class CommentServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String limitString = getParameter(request, "number-comments", "5");
+    int limitInt = parseToInteger(limitString);
+    
+    if(limitInt > 100) {
+        limitInt = 100;
+    } else if(limitInt <= 0) {
+        limitInt = 1;
+    }
 
-    List<Comment> comments = getComments(Integer.parseInt(limitString));
+    List<Comment> comments = getComments(limitInt);
 
     Gson gson = new Gson();
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));
+  }
+
+  private int parseToInteger(String str) {
+    try {
+      return Integer.parseInt(str);
+    } catch(NumberFormatException exception) {
+      return 5; //default value
+    }
   }
 
   private List<Comment> getComments(int commentLimit) {
