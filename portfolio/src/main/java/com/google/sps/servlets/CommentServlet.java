@@ -42,7 +42,7 @@ public class CommentServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     
-    if (value.equals("")) {
+    if (value.equals("") || value == null) {
       return defaultValue;
     }
     return value;
@@ -55,10 +55,7 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String limitString = request.getParameter("number-comments");
-    if(!limitString.equals("5") && !limitString.equals("10") && !limitString.equals("15") && !limitString.equals("50") && !limitString.equals("100")) {
-        limitString = "5"; //set to default value
-    }
+    String limitString = getParameter(request, "number-comments", "5");
 
     List<Comment> comments = getComments(Integer.parseInt(limitString));
 
