@@ -175,7 +175,7 @@
       <div class="resume-section-content">
 
         <h2 class="mb-5">Leave a comment</h2>
-        <form action="/comments" method="POST">
+        <form action="/comments" method="POST" id="form1">
           <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" name="user-name" placeholder="Enter name..." id="name">
@@ -184,7 +184,7 @@
             <label for="comment">Comment:</label>
             <input type="text" class="form-control" name="user-text" placeholder="Enter comment..." id="comment">
           </div>
-            <input type="submit" value="Submit"> 
+          <button type="submit" form="form1" value="Submit" class="btn-outline-secondary">Submit</button>
         </form>
         <hr>
 
@@ -200,6 +200,7 @@
             </select>
           </div>
         </form>
+    
         <ul id="comment-list"></ul>
       </div>
     </section>

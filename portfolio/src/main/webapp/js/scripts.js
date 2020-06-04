@@ -65,10 +65,11 @@ function createCommentElement(comment) {
 
   const textElement = document.createElement('span');
   const date = new Date(comment.timestamp);
-  textElement.innerText = comment.text + " - " + comment.name + " on " + date;
+  textElement.innerText = comment.text + " - " + comment.name + " on " + date.toDateString();
 
   const deleteButtonElement = document.createElement('button');
-  deleteButtonElement.innerText = 'X';
+  deleteButtonElement.className = 'btn-outline-secondary';
+  deleteButtonElement.innerText = 'Delete';
   deleteButtonElement.addEventListener('click', () => {
     deleteComment(comment.id);
     commentElement.remove();
