@@ -45,7 +45,7 @@
 function loadComments() {
   var num = document.getElementById("number").value;
   if (num == null) {
-    num = 5;
+    num = "5";
   }
 
   fetch('/comments?number-comments=' + num)

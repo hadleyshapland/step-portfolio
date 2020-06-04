@@ -55,8 +55,12 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    int commentLimit = Integer.parseInt(request.getParameter("number-comments"));
-    List<Comment> comments = getComments(commentLimit);
+    String limitString = request.getParameter("number-comments");
+    if(!limitString.equals("5") && !limitString.equals("10") && !limitString.equals("15") && !limitString.equals("50") && !limitString.equals("100")) {
+        limitString = "5"; //set to default value
+    }
+
+    List<Comment> comments = getComments(Integer.parseInt(limitString));
 
     Gson gson = new Gson();
     response.setContentType("application/json;");
