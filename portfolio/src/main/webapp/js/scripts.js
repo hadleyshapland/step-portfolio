@@ -43,7 +43,7 @@
 
 
 function loadComments() {
-  var num = document.getElementById("number").value;
+  let num = document.getElementById("number").value;
   if (num == null) {
     num = "5";
   }
