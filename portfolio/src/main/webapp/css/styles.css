@@ -10144,8 +10144,7 @@ section.resume-section .resume-section-content {
   border-radius: 0.25rem;
   border: 1px solid #ced4da;
   display: block;
-  font-size: 1rem;
-  font-weight: 400;
+  font: 1rem, 400;
   height: calc(1.5em + 0.75rem + 2px);
   line-height: 1.5;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
