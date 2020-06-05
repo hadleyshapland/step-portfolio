@@ -12,7 +12,7 @@
     <link rel="manifest" href="assets/img/site.webmanifest">
     <link href="css/styles.css" rel="stylesheet">
   </head>
-  <body id="page-top" onload="loadComments()">
+  <body id="page-top" onload="onLoad();">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
       <a class="navbar-brand js-scroll-trigger" href="#page-top"
@@ -166,11 +166,14 @@
     <p>On campus, I am a member of the Vanderbilt Equestrian Team, Society of Women Engineers, 
     and Theta Tau (the professional engineering fraternity). Outside of school, I enjoy spending my 
     time riding my horse, Kip, reading, hiking, and spending time with friends. </p>
+    <hr>
+    <!-- Map Feature-->
+    <div id="map"></div>
     </div>
     </section>
     <hr class="m-0">
     </div>
-    <!-- Servlet-->
+    <!-- Comments-->
     <section class="resume-section" id="comments">
       <div class="resume-section-content">
 
@@ -205,6 +208,7 @@
       </div>
     </section>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBd6L5aVm5z-MWG4eBEiG1V4WF0pBn7LiM" async defer></script>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Bootstrap core JS-->

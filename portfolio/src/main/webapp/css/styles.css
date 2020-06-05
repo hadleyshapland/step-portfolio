@@ -10160,3 +10160,8 @@ section.resume-section .resume-section-content {
 .comment span {
   flex-grow: 2;
 }
+
+#map {
+  height: 31.250em;
+  width: 31.250em;
+}
