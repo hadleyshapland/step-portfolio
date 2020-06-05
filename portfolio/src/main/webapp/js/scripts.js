@@ -41,6 +41,11 @@
     });
 })(jQuery); // End of use strict
 
+//called in body onload
+function onLoad() {
+    createMap();
+    loadComments();
+}
 
 function loadComments() {
   let num = document.getElementById("number").value;
@@ -57,7 +62,6 @@ function loadComments() {
     })
   });
 }
-
 
 function createCommentElement(comment) {
   const commentElement = document.createElement('li');
@@ -85,4 +89,10 @@ function deleteComment(id) {
   const params = new URLSearchParams();
   params.append('id', id);
   fetch('/delete-comment', {method: 'POST', body: params});
+}
+
+function createMap() {
+  const map = new google.maps.Map(
+    document.getElementById('map'),
+    {center: {lat: 36.1486, lng: -86.8050}, zoom: 16});
 }
