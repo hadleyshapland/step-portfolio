@@ -92,16 +92,16 @@ function deleteComment(id) {
 }
 
 function createMap() {
-  const stylesArray = getStylesArray();
+  const darkModeArray = getDarkModeArray();
   const map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 36.1486, lng: -86.8050}, 
     zoom: 16,
-    styles: stylesArray,
+    styles: darkModeArray,
   });
-
 }
 
-function getStylesArray() {
+//dark mode styles from https://developers.google.com/maps/documentation/javascript/styling?hl=en_US
+function getDarkModeArray() {
 return [
   {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
   {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
