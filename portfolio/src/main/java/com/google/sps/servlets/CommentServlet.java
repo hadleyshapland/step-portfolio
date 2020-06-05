@@ -56,7 +56,7 @@ public class CommentServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String limitString = getParameter(request, "number-comments", "5");
-    int limitInt = parseToInteger(limitString);
+    int limitInt = parseToInteger(limitString, 5);
     
     if(limitInt > 100) {
         limitInt = 100;
@@ -71,11 +71,11 @@ public class CommentServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(comments));
   }
 
-  private int parseToInteger(String str) {
+  private int parseToInteger(String str, int defaultValue) {
     try {
       return Integer.parseInt(str);
     } catch(NumberFormatException exception) {
-      return 5; //default value
+      return defaultValue;
     }
   }
 
