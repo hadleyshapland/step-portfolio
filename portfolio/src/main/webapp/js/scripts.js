@@ -100,6 +100,20 @@ function createMap() {
   });
 }
 
+// //GLOBAL VAR
+// const darkModeArray = getDarkModeArray();
+//   const map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 36.1486, lng: -86.8050}, 
+//     zoom: 16,
+//     styles: darkModeArray,
+//   });
+
+// function mapTo(lati, long) {
+//     var latLng = new google.maps.LatLng(lati, long);
+//     map.panTo(latLng);
+//     return false;
+// }
+
 //dark mode styles from https://developers.google.com/maps/documentation/javascript/styling?hl=en_US
 function getDarkModeArray() {
 return [
