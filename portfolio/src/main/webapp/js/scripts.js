@@ -43,41 +43,44 @@
 
 
 function loadComments() {
-    fetch('/comments')
-    .then(response => response.json())
-    .then((comments) => 
+  let num = document.getElementById("number").value;
+  fetch('/comments?number-comments=' + num)
+  .then(response => response.json())
+  .then((comments) => 
+  {
+    let commentListElement = document.getElementById('comment-list');
+    commentListElement.innerHTML = "";
+        
+    comments.forEach((comment) => 
     {
-        const commentListElement = document.getElementById('comment-list');
-        comments.forEach((comment) => 
-        {
-            commentListElement.appendChild(createCommentElement(comment));
-        })
-    });
+      commentListElement.appendChild(createCommentElement(comment));
+    })
+  });
 }
 
 
 function createCommentElement(comment) {
-    const commentElement = document.createElement('li');
-    commentElement.className = 'comment';
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
 
-    const textElement = document.createElement('span');
-    const date = new Date(comment.timestamp);
-    textElement.innerText = comment.text + " - " + comment.name + " on " + date;
+  const textElement = document.createElement('span');
+  const date = new Date(comment.timestamp);
+  textElement.innerText = comment.text + " - " + comment.name + " on " + date.toDateString();
 
-    const deleteButtonElement = document.createElement('button');
-    deleteButtonElement.innerText = 'X';
-    deleteButtonElement.addEventListener('click', () => {
-        deleteComment(comment.id);
-        commentElement.remove();
-    });
+  const deleteButtonElement = document.createElement('button');
+  deleteButtonElement.className = 'btn-outline-secondary';
+  deleteButtonElement.innerText = 'Delete';
+  deleteButtonElement.addEventListener('click', () => {
+    deleteComment(comment.id);
+    commentElement.remove();
+  });
 
-    commentElement.appendChild(textElement);
-    commentElement.appendChild(deleteButtonElement);
+  commentElement.appendChild(textElement);
+  commentElement.appendChild(deleteButtonElement);
 
-    return commentElement;
+  return commentElement;
 }
 
-/** Tells the server to delete the comment. */
 function deleteComment(id) {
   const params = new URLSearchParams();
   params.append('id', id);

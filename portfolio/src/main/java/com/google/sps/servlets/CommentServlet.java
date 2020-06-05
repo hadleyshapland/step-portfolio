@@ -3,6 +3,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -25,6 +26,7 @@ public class CommentServlet extends HttpServlet {
     
     String name = getParameter(request, "user-name", "Anonymous");
     String text = getParameter(request, "user-text", "[blank]");
+    
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
@@ -40,7 +42,7 @@ public class CommentServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     
-    if (value.equals("")) {
+    if (value == null || value.equals("")) {
       return defaultValue;
     }
     return value;
@@ -53,21 +55,36 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String limitString = getParameter(request, "number-comments", "5");
+    int limitInt = parseToInteger(limitString, 5);
+    
+    if(limitInt > 100) {
+        limitInt = 100;
+    } else if(limitInt <= 0) {
+        limitInt = 1;
+    }
 
-    List<Comment> comments = getComments();
+    List<Comment> comments = getComments(limitInt);
 
     Gson gson = new Gson();
-
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));
   }
 
-  private List<Comment> getComments() {
+  private int parseToInteger(String str, int defaultValue) {
+    try {
+      return Integer.parseInt(str);
+    } catch(NumberFormatException exception) {
+      return defaultValue;
+    }
+  }
+
+  private List<Comment> getComments(int commentLimit) {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = getFromDatabase(query);
 
     List<Comment> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(commentLimit))) {
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");

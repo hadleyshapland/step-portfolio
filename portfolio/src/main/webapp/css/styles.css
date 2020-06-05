@@ -232,7 +232,7 @@ label {
 }
 
 button {
-  border-radius: 0;
+  border-radius: 4px;
 }
 
 button:focus {
@@ -10143,9 +10143,8 @@ section.resume-section .resume-section-content {
   background-color: #fff;
   border-radius: 0.25rem;
   border: 1px solid #ced4da;
-  display: block;
-  font-size: 1rem;
-  font-weight: 400;
+  display: flex;
+  font: 1rem, 400;
   height: calc(1.5em + 0.75rem + 2px);
   line-height: 1.5;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -10154,6 +10153,8 @@ section.resume-section .resume-section-content {
 
 #comment-list {
   list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .comment span {
