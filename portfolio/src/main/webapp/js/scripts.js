@@ -1,3 +1,6 @@
+//global variable for map
+let map;
+
 /*!
     * Start Bootstrap - Resume v6.0.0 (https://startbootstrap.com/template-overviews/resume)
     * Copyright 2013-2020 Start Bootstrap
@@ -93,10 +96,32 @@ function deleteComment(id) {
 
 function createMap() {
   const darkModeArray = getDarkModeArray();
-  const map = new google.maps.Map(document.getElementById('map'), {
+  
+  map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 36.1486, lng: -86.8050}, 
-    zoom: 16,
+    zoom: 2,
     styles: darkModeArray,
+  });
+}
+
+function codeAddress(address) {
+  let goTo = address;
+  if(goTo == undefined) {
+    goTo = document.getElementById('address').value;
+  }
+
+  let geocoder = new google.maps.Geocoder();
+  geocoder.geocode( { 'address': goTo}, function(results, status) {
+    if (status == 'OK') {
+      map.setCenter(results[0].geometry.location);
+      map.setZoom(15);
+      const marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+      });
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
   });
 }
 

@@ -165,14 +165,33 @@
     chosen as the intern who developed scripts to analyze MRI data for my team’s project.</p>
     <p>On campus, I am a member of the Vanderbilt Equestrian Team, Society of Women Engineers, 
     and Theta Tau (the professional engineering fraternity). Outside of school, I enjoy spending my 
-    time riding my horse, Kip, reading, hiking, and spending time with friends. </p>
+    time riding my horse, Kip, reading, hiking, and spending time with friends. Below is an interactive
+    map where you can explore some places that are important to me.</p>
     <hr>
     <!-- Map Feature-->
+    <div class="btn-group" role="group">   
+     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      My Places</button>
+      <div class = "dropdown-menu">
+        <button class= "dropdown-item" onclick="codeAddress('Sidney, IL')">My Hometown</button>
+        <button class= "dropdown-item" onclick="codeAddress('2201 West End Ave, Nashville, TN')">My School</button>
+        <button class= "dropdown-item" onclick="codeAddress('Sydney, Australia')">Dream Vacation</button>
+        <button class= "dropdown-item" onclick="codeAddress('Sunnyvale, CA')">Where I almost lived this summer</button>
+        <button class= "dropdown-item" onclick="codeAddress('Emmy Squared - Gulch')">Best Nashville Pizza</button>
+      </div>
+    </div>
+    <br><br>
     <div id="map"></div>
-    </div>
-    </section>
+    <br>
+    <form onsubmit="return false">
+      <div class="form-group">
+        <input id="address" type="textbox" placeholder="Enter an address...">
+        <button type="button" onClick="codeAddress()" class="btn-outline-secondary">Go!</button>  
+      </div>
+    </form>
+  </div>
+  </section> 
     <hr class="m-0">
-    </div>
     <!-- Comments-->
     <section class="resume-section" id="comments">
       <div class="resume-section-content">
