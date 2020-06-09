@@ -35,16 +35,8 @@ public class RegionDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String region = request.getParameter("region");
 
-    // Map<String, Integer> currentData = getVotes();
-
-    // //add new vote
-    // Integer currentVotes = currentData.containsKey(region) ? currentData.get(region) : 0;
-    // currentData.put(region, currentVotes + 1);
-
-
     Entity voteEntity = new Entity("Vote");
     voteEntity.setProperty("name", region);
-    // voteEntity.setProperty("votes", currentVotes + 1);
  
     writeToDatabase(voteEntity);
  
@@ -57,21 +49,14 @@ public class RegionDataServlet extends HttpServlet {
     datastore.put(toWrite);
   }
  
-private Map<String, Integer> getVotes() {
+  private Map<String, Integer> getVotes() {
     Query query = new Query("Vote");
     PreparedQuery results = getFromDatabase(query);
  
     Map<String, Integer> toReturn = new HashMap<String, Integer>();
 
     for(Entity entity : results.asIterable()) {
-        // Integer votes = (Integer) entity.getProperty("votes");
         String name = (String) entity.getProperty("name");
- 
-        // Integer empty = toReturn.putIfAbsent(name, votes);
-        // if(empty != null) {
-        //     Integer beforeValue = toReturn.get(name);
-        //     toReturn.put(name, beforeValue + 1);
-        // }
 
         if(toReturn.containsKey(name)) {
             Integer currentVote = toReturn.get(name);
@@ -80,13 +65,13 @@ private Map<String, Integer> getVotes() {
             toReturn.put(name, 1);
         }
     }
-    
     return toReturn;
-}
+  }
  
   private PreparedQuery getFromDatabase(Query query) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     return results;
   }
+  
 }
