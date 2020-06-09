@@ -10146,8 +10146,9 @@ section.resume-section .resume-section-content {
   display: flex;
   font: 1rem, 400;
   height: calc(1.5em + 0.75rem + 2px);
-  line-height: 1.5;
+  overflow: scroll;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  white-space: normal;
   width: 100%;
 }
 
@@ -10155,6 +10156,7 @@ section.resume-section .resume-section-content {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  word-wrap: break-word;
 }
 
 .comment span {
