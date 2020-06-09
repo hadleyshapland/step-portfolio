@@ -7,11 +7,8 @@
 # Example workflow
 name: Format
 
-on:
-  push:
-    branches:
-      - master
-
+on: [push, pull_request]
+  
 jobs:
 
   formatting:
