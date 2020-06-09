@@ -30,7 +30,3 @@ jobs:
         
     - name: Google Java Format
       uses: axel-op/googlejavaformat-action@v3.1.0
-      with:
-    # Arguments for the Google Java Format executable
-    # Version of Google Java Format to use
-        version: "11"
