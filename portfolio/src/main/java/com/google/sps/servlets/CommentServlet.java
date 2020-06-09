@@ -23,10 +23,10 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
+
     String name = getParameter(request, "user-name", "Anonymous");
     String text = getParameter(request, "user-text", "[blank]");
-    
+
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
@@ -41,7 +41,7 @@ public class CommentServlet extends HttpServlet {
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    
+
     if (value == null || value.equals("")) {
       return defaultValue;
     }
@@ -57,11 +57,11 @@ public class CommentServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String limitString = getParameter(request, "number-comments", "5");
     int limitInt = parseToInteger(limitString, 5);
-    
-    if(limitInt > 100) {
-        limitInt = 100;
-    } else if(limitInt <= 0) {
-        limitInt = 1;
+
+    if (limitInt > 100) {
+      limitInt = 100;
+    } else if (limitInt <= 0) {
+      limitInt = 1;
     }
 
     List<Comment> comments = getComments(limitInt);
@@ -74,7 +74,7 @@ public class CommentServlet extends HttpServlet {
   private int parseToInteger(String str, int defaultValue) {
     try {
       return Integer.parseInt(str);
-    } catch(NumberFormatException exception) {
+    } catch (NumberFormatException exception) {
       return defaultValue;
     }
   }
