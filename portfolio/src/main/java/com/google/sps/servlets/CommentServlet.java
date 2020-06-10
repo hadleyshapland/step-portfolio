@@ -25,7 +25,7 @@ public class CommentServlet extends HttpServlet {
   private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     String name = getParameter(request, "user-name", "Anonymous");
     String text = getParameter(request, "user-text", "[blank]");
