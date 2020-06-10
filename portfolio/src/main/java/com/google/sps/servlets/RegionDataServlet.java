@@ -44,7 +44,6 @@ public class RegionDataServlet extends HttpServlet {
   }
 
   private void writeToDatabase(Entity toWrite) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(toWrite);
   }
 
