@@ -33,18 +33,18 @@ public class RegionDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String region = request.getParameter("region");
-    
+
     Entity regionEntity = new Entity("Region", region);
     regionEntity.setProperty("name", region);
 
     Map<String, Long> currentVotes = getVotes();
-    
-    if(currentVotes.containsKey(region)) {
-        //increment vote
-        Long preVote = currentVotes.get(region);
-        regionEntity.setProperty("votes", preVote + 1);
+
+    if (currentVotes.containsKey(region)) {
+      // increment vote
+      Long preVote = currentVotes.get(region);
+      regionEntity.setProperty("votes", preVote + 1);
     } else {
-        regionEntity.setProperty("votes", 1);
+      regionEntity.setProperty("votes", 1);
     }
 
     writeToDatabase(regionEntity);
@@ -56,16 +56,16 @@ public class RegionDataServlet extends HttpServlet {
   }
 
   private Map<String, Long> getVotes() {
-      Query query = new Query("Region");
-      PreparedQuery results = getFromDatabase(query);
-      
-      Map<String, Long> toReturn = new HashMap<String, Long>();
+    Query query = new Query("Region");
+    PreparedQuery results = getFromDatabase(query);
 
-      for (Entity entity : results.asIterable()) {
-          toReturn.put((String)entity.getProperty("name"), (Long)entity.getProperty("votes"));
-      }
-      
-      return toReturn;
+    Map<String, Long> toReturn = new HashMap<String, Long>();
+
+    for (Entity entity : results.asIterable()) {
+      toReturn.put((String) entity.getProperty("name"), (Long) entity.getProperty("votes"));
+    }
+
+    return toReturn;
   }
 
   private PreparedQuery getFromDatabase(Query query) {
