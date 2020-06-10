@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/comments")
 public class CommentServlet extends HttpServlet {
 
+  //database instance
+  private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -98,8 +101,6 @@ public class CommentServlet extends HttpServlet {
   }
 
   private PreparedQuery getFromDatabase(Query query) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    return results;
+    return datastore.prepare(query);
   }
 }

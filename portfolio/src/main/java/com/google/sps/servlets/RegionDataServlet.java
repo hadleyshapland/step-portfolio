@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/region-data")
 public class RegionDataServlet extends HttpServlet {
 
+  //database instance    
+  private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -65,8 +68,6 @@ public class RegionDataServlet extends HttpServlet {
   }
 
   private PreparedQuery getFromDatabase(Query query) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    return results;
+    return datastore.prepare(query);
   }
 }
