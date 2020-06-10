@@ -22,8 +22,7 @@ public class RegionDataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    Map<String, Integer> regionVotes = getVotes();
+    Map<String, Long> regionVotes = getVotes();
 
     response.setContentType("application/json");
     Gson gson = new Gson();
@@ -34,12 +33,21 @@ public class RegionDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String region = request.getParameter("region");
+    
+    Entity regionEntity = new Entity("Region", region);
+    regionEntity.setProperty("name", region);
 
-    Entity voteEntity = new Entity("Vote");
-    voteEntity.setProperty("name", region);
+    Map<String, Long> currentVotes = getVotes();
+    
+    if(currentVotes.containsKey(region)) {
+        //increment vote
+        Long preVote = currentVotes.get(region);
+        regionEntity.setProperty("votes", preVote + 1);
+    } else {
+        regionEntity.setProperty("votes", 1);
+    }
 
-    writeToDatabase(voteEntity);
-
+    writeToDatabase(regionEntity);
     response.sendRedirect("/index.html#forfun");
   }
 
@@ -47,23 +55,17 @@ public class RegionDataServlet extends HttpServlet {
     datastore.put(toWrite);
   }
 
-  private Map<String, Integer> getVotes() {
-    Query query = new Query("Vote");
-    PreparedQuery results = getFromDatabase(query);
+  private Map<String, Long> getVotes() {
+      Query query = new Query("Region");
+      PreparedQuery results = getFromDatabase(query);
+      
+      Map<String, Long> toReturn = new HashMap<String, Long>();
 
-    Map<String, Integer> toReturn = new HashMap<String, Integer>();
-
-    for (Entity entity : results.asIterable()) {
-      String name = (String) entity.getProperty("name");
-
-      if (toReturn.containsKey(name)) {
-        Integer currentVote = toReturn.get(name);
-        toReturn.put(name, currentVote + 1);
-      } else {
-        toReturn.put(name, 1);
+      for (Entity entity : results.asIterable()) {
+          toReturn.put((String)entity.getProperty("name"), (Long)entity.getProperty("votes"));
       }
-    }
-    return toReturn;
+      
+      return toReturn;
   }
 
   private PreparedQuery getFromDatabase(Query query) {
