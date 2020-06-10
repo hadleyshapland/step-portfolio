@@ -31,7 +31,8 @@ public class RegionDataServlet extends HttpServlet {
   }
 
   @Override
-  public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     String region = request.getParameter("region");
 
     Entity regionEntity = new Entity("Region", region);
