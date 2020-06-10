@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/region-data")
 public class RegionDataServlet extends HttpServlet {
 
-  //database instance    
+  // database instance
   private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override

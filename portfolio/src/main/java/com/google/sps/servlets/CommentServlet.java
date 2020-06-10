@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/comments")
 public class CommentServlet extends HttpServlet {
 
-  //database instance
+  // database instance
   private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override
