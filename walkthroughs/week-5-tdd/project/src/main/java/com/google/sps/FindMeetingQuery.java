@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 public final class FindMeetingQuery {
-  // This algorithm creates a List of all the times at least one attendee is busy, then uses that List to find all the times that everyone is available
+  // This algorithm creates a List of all the times at least one attendee is busy, then uses that
+  // List to find all the times that everyone is available
   // The worst-case runtime is O(n^2)
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequested = request.getAttendees();
@@ -46,7 +47,7 @@ public final class FindMeetingQuery {
     return goodTimes;
   }
 
-/** Returns a List with all the times that requested attendees have conflicts. */
+  /** Returns a List with all the times that requested attendees have conflicts. */
   private List<TimeRange> getBadTimes(
       Collection<Event> events, Collection<String> attendeesRequested) {
     List<TimeRange> badTimes = new ArrayList<TimeRange>();
@@ -63,7 +64,7 @@ public final class FindMeetingQuery {
           conflict = true;
         }
       }
-      if (conflict == true) { //there was an attendee with a conflict, so add bad time to List
+      if (conflict == true) { // there was an attendee with a conflict, so add bad time to List
         badTimes.add(conflictEvent.getWhen());
       }
     }
@@ -73,14 +74,17 @@ public final class FindMeetingQuery {
     return badTimes;
   }
 
-/** Returns a List with all the TimeRanges between the badTimes that are greater or equal to the requested meeting duration. */
+  /**
+   * Returns a List with all the TimeRanges between the badTimes that are greater or equal to the
+   * requested meeting duration.
+   */
   private List<TimeRange> getGoodTimes(List<TimeRange> badTimes, int meetingDuration) {
     List<TimeRange> goodTimes = new ArrayList<TimeRange>();
 
-    //beginning of an available period
+    // beginning of an available period
     int goodStart = TimeRange.START_OF_DAY;
 
-    //end of an available period
+    // end of an available period
     int goodEnd = TimeRange.END_OF_DAY;
 
     for (TimeRange badRange : badTimes) {
@@ -93,7 +97,8 @@ public final class FindMeetingQuery {
         }
       }
 
-      // only increment goodStart if it is before the next ending period - takes care of nested events
+      // only increment goodStart if it is before the next ending period - takes care of nested
+      // events
       if (goodStart < (goodEnd + badRange.duration())) {
         goodStart = goodEnd + badRange.duration();
       }
