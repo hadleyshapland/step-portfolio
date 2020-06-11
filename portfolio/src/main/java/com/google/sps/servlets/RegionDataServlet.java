@@ -3,6 +3,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
@@ -34,31 +36,26 @@ public class RegionDataServlet extends HttpServlet {
   public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     String region = request.getParameter("region");
-
     Entity regionEntity = new Entity("Region", region);
-    regionEntity.setProperty("name", region);
 
-    Map<String, Long> currentVotes = getVotes();
-
-    if (currentVotes.containsKey(region)) {
-      // increment vote
-      Long preVote = currentVotes.get(region);
-      regionEntity.setProperty("votes", preVote + 1);
-    } else {
-      regionEntity.setProperty("votes", 1);
+    Key entityKey = KeyFactory.createKey("Region", region);
+ 
+    try {
+        regionEntity = datastore.get(entityKey);
+        Long preVote = (Long)regionEntity.getProperty("votes");
+        regionEntity.setProperty("votes", preVote + 1);
+    } catch(Exception e) {
+        regionEntity.setProperty("name", region);
+        regionEntity.setProperty("votes", 1);
     }
 
-    writeToDatabase(regionEntity);
+    datastore.put(regionEntity);
     response.sendRedirect("/index.html#forfun");
-  }
-
-  private void writeToDatabase(Entity toWrite) {
-    datastore.put(toWrite);
   }
 
   private Map<String, Long> getVotes() {
     Query query = new Query("Region");
-    PreparedQuery results = getFromDatabase(query);
+    PreparedQuery results = datastore.prepare(query);
 
     Map<String, Long> toReturn = new HashMap<String, Long>();
 
@@ -67,9 +64,5 @@ public class RegionDataServlet extends HttpServlet {
     }
 
     return toReturn;
-  }
-
-  private PreparedQuery getFromDatabase(Query query) {
-    return datastore.prepare(query);
   }
 }
