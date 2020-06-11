@@ -21,8 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/comments")
 public class CommentServlet extends HttpServlet {
 
+  // database instance
+  private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
 
     String name = getParameter(request, "user-name", "Anonymous");
     String text = getParameter(request, "user-text", "[blank]");
@@ -49,7 +53,6 @@ public class CommentServlet extends HttpServlet {
   }
 
   private void writeToDatabase(Entity toWrite) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(toWrite);
   }
 
@@ -98,8 +101,6 @@ public class CommentServlet extends HttpServlet {
   }
 
   private PreparedQuery getFromDatabase(Query query) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    return results;
+    return datastore.prepare(query);
   }
 }
