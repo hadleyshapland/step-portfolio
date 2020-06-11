@@ -39,14 +39,14 @@ public class RegionDataServlet extends HttpServlet {
     Entity regionEntity = new Entity("Region", region);
 
     Key entityKey = KeyFactory.createKey("Region", region);
- 
+
     try {
-        regionEntity = datastore.get(entityKey);
-        Long preVote = (Long)regionEntity.getProperty("votes");
-        regionEntity.setProperty("votes", preVote + 1);
-    } catch(Exception e) {
-        regionEntity.setProperty("name", region);
-        regionEntity.setProperty("votes", 1);
+      regionEntity = datastore.get(entityKey);
+      Long preVote = (Long) regionEntity.getProperty("votes");
+      regionEntity.setProperty("votes", preVote + 1);
+    } catch (Exception e) {
+      regionEntity.setProperty("name", region);
+      regionEntity.setProperty("votes", 1);
     }
 
     datastore.put(regionEntity);
