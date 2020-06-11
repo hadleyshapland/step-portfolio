@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 public final class FindMeetingQuery {
-  // This algorithm creates a List of all the times at least one attendee is busy, then uses that List to find all the times that everyone is available
-  // The worst-case runtime is O(n^2)
+  /** This algorithm creates a List of all the times at least one attendee is busy, then uses that List to find all the times that everyone is available
+   The worst-case runtime is O(n^2) */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequested = request.getAttendees();
     int meetingDuration = (int) request.getDuration();
