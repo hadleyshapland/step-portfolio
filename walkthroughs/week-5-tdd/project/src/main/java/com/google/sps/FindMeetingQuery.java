@@ -29,7 +29,6 @@ public final class FindMeetingQuery {
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequested = request.getAttendees();
-    int meetingDuration = (int) request.getDuration();
 
     // check for no attendees
     if (attendeesRequested.isEmpty()) {
@@ -41,45 +40,37 @@ public final class FindMeetingQuery {
       return Arrays.asList();
     }
 
-    List<TimeRange> badTimes = getBadTimes(events, attendeesRequested);
-
-    // list to hold all the available times (everything not in badTimes)
-    List<TimeRange> goodTimes = getGoodTimes(badTimes, meetingDuration);
-    return goodTimes;
+    int meetingDuration = (int) request.getDuration();
+    return getGoodTimes(getBusyTimes(events, attendeesRequested), meetingDuration);
   }
 
   /** Returns a List with all the times that requested attendees have conflicts. */
-  private List<TimeRange> getBadTimes(
-      Collection<Event> events, Collection<String> attendeesRequested) {
-    List<TimeRange> badTimes = new ArrayList<TimeRange>();
+  private List<TimeRange> getBusyTimes(
+      Collection<Event> events, Collection<String> attendees) {
+    List<TimeRange> busyTimes = new ArrayList<TimeRange>();
 
-    // iterate through all events and add  time to badTimes if attendee is in attendeesRequested
+    // iterate through all events and add  time to busyTimes if attendee is in the request
     for (Event conflictEvent : events) {
       Set<String> busyAttendees = conflictEvent.getAttendees();
 
-      // loop to see if any attendees in conflictEvent are in attendeesRequested
-      Boolean conflict = false;
-      Iterator<String> eventIter = busyAttendees.iterator();
-      while (!conflict && eventIter.hasNext()) {
-        if (attendeesRequested.contains(eventIter.next())) {
-          conflict = true;
-        }
-      }
-      if (conflict == true) { // there was an attendee with a conflict, so add bad time to List
-        badTimes.add(conflictEvent.getWhen());
+      // loop to see if any attendees in conflictEvent are requested attendees
+      for (String attendee : busyAttendees) {
+          if(attendees.contains(attendee)) {
+              busyTimes.add(conflictEvent.getWhen());
+              break;
+          }
       }
     }
 
-    // sort badTimes
-    Collections.sort(badTimes, TimeRange.ORDER_BY_START);
-    return badTimes;
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
+    return busyTimes;
   }
 
   /**
-   * Returns a List with all the TimeRanges between the badTimes that are greater or equal to the
+   * Returns a List with all the TimeRanges between the busyTimes that are greater or equal to the
    * requested meeting duration.
    */
-  private List<TimeRange> getGoodTimes(List<TimeRange> badTimes, int meetingDuration) {
+  private List<TimeRange> getGoodTimes(List<TimeRange> busyTimes, int meetingDuration) {
     List<TimeRange> goodTimes = new ArrayList<TimeRange>();
 
     // beginning of an available period
@@ -88,8 +79,8 @@ public final class FindMeetingQuery {
     // end of an available period
     int goodEnd = TimeRange.END_OF_DAY;
 
-    for (TimeRange badRange : badTimes) {
-      goodEnd = badRange.start();
+    for (TimeRange busyRange : busyTimes) {
+      goodEnd = busyRange.start();
 
       if (goodEnd > goodStart) {
         TimeRange goodRange = TimeRange.fromStartEnd(goodStart, goodEnd, false);
@@ -100,8 +91,8 @@ public final class FindMeetingQuery {
 
       // only increment goodStart if it is before the next ending period - takes care of nested
       // events
-      if (goodStart < (goodEnd + badRange.duration())) {
-        goodStart = goodEnd + badRange.duration();
+      if (goodStart < (goodEnd + busyRange.duration())) {
+        goodStart = goodEnd + busyRange.duration();
       }
     }
 
