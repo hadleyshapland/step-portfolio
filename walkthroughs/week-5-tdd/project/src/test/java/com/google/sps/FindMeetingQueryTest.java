@@ -415,7 +415,7 @@ public final class FindMeetingQueryTest {
   }
 
     @Test
-    public void allOptional() {
+    public void allOptionalWithGaps() {
         // Scenario 4: No mandatory atendees, just two optional attendees with gaps in their schedules.
         // These gaps should be identified and returned.
 
@@ -451,9 +451,32 @@ public final class FindMeetingQueryTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void allOptionalNoGaps() {
+        // Scenario 5: No mandatory atendees, just two optional attendees with schedules that
+        // completely overlap. Should return that no time is available.
 
+        Collection<Event> events =
+            Arrays.asList(
+                new Event(
+                    "Event 1",
+                    TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_1100AM, false),
+                    Arrays.asList(PERSON_A)),
+                new Event(
+                    "Event 2",
+                    TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true),
+                    Arrays.asList(PERSON_B)));
 
+        MeetingRequest request =
+            new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
 
+        request.addOptionalAttendee(PERSON_A);
+        request.addOptionalAttendee(PERSON_B);
 
+        Collection<TimeRange> actual = query.query(events, request);
+        Collection<TimeRange> expected = Arrays.asList();
+
+        Assert.assertEquals(expected, actual);
+    }
 
 }
