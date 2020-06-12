@@ -25,7 +25,7 @@ import java.util.Set;
 public final class FindMeetingQuery {
   /**
    * This algorithm creates a List of all the times at least one attendee is busy, then uses that
-   * List to find all the times that everyone is available The worst-case runtime is O(n^2)
+   * List to find all the times that everyone is available The worst-case runtime is O(events*attendees)
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequested = request.getAttendees();
@@ -44,8 +44,8 @@ public final class FindMeetingQuery {
     return getGoodTimes(getBusyTimes(events, attendeesRequested), meetingDuration);
   }
 
-  /** Returns a List with all the times that requested attendees have conflicts. */
-  private List<TimeRange> getBusyTimes(
+  /** Returns a sorted List (earliest to latest by start time) with all the times that requested attendees have conflicts. */
+  private static List<TimeRange> getBusyTimes(
       Collection<Event> events, Collection<String> attendees) {
     List<TimeRange> busyTimes = new ArrayList<TimeRange>();
 
@@ -70,7 +70,7 @@ public final class FindMeetingQuery {
    * Returns a List with all the TimeRanges between the busyTimes that are greater or equal to the
    * requested meeting duration.
    */
-  private List<TimeRange> getGoodTimes(List<TimeRange> busyTimes, int meetingDuration) {
+  private static List<TimeRange> getGoodTimes(List<TimeRange> busyTimes, int meetingDuration) {
     List<TimeRange> goodTimes = new ArrayList<TimeRange>();
 
     // beginning of an available period
@@ -89,19 +89,17 @@ public final class FindMeetingQuery {
         }
       }
 
-      // only increment goodStart if it is before the next ending period - takes care of nested
-      // events
-      if (goodStart < (goodEnd + busyRange.duration())) {
-        goodStart = goodEnd + busyRange.duration();
-      }
+      // only increment goodStart if it is earlier than the next ending period - takes care of nested
+      // events with the following format (don't want goodStart to go back in time):
+      // Events  :       |----A----|
+      //                   |--B--|
+      // Day     : |---------------------|
+      goodStart = Math.max(goodStart, busyRange.end());
     }
 
     // edge case for last time chunk
-    if (goodStart < TimeRange.END_OF_DAY) {
-      TimeRange goodRange = TimeRange.fromStartEnd(goodStart, TimeRange.END_OF_DAY, true);
-      if (goodRange.duration() >= meetingDuration) {
-        goodTimes.add(goodRange);
-      }
+    if(TimeRange.END_OF_DAY - goodStart > meetingDuration) {
+        goodTimes.add(TimeRange.fromStartEnd(goodStart, TimeRange.END_OF_DAY, true));
     }
 
     return goodTimes;
