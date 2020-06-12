@@ -14,10 +14,97 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public final class FindMeetingQuery {
+  /**
+   * This algorithm creates a List of all the times at least one attendee is busy, then uses that
+   * List to find all the times that everyone is available The worst-case runtime is
+   * O(events*attendees)
+   */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    Collection<String> attendeesRequested = request.getAttendees();
+
+    // check for no attendees
+    if (attendeesRequested.isEmpty()) {
+      return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+
+    // check duration of meeting request
+    if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
+      return Arrays.asList();
+    }
+
+    return getGoodTimes(events, request);
+  }
+
+  /**
+   * Returns a sorted List (earliest to latest by start time) with all the times that requested
+   * attendees have conflicts.
+   */
+  private static List<TimeRange> getBusyTimes(
+      Collection<Event> events, Collection<String> attendees) {
+    List<TimeRange> busyTimes = new ArrayList<TimeRange>();
+
+    // iterate through all events and add  time to busyTimes if attendee is in the request
+    for (Event conflictEvent : events) {
+      Set<String> busyAttendees = conflictEvent.getAttendees();
+
+      // loop to see if any attendees in conflictEvent are requested attendees
+      for (String attendee : busyAttendees) {
+        if (attendees.contains(attendee)) {
+          busyTimes.add(conflictEvent.getWhen());
+          break;
+        }
+      }
+    }
+
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
+    return busyTimes;
+  }
+
+  /**
+   * Returns a List with all the TimeRanges between the busyTimes that are greater or equal to the
+   * requested meeting duration.
+   */
+  private static List<TimeRange> getGoodTimes(Collection<Event> events, MeetingRequest request) {
+    List<TimeRange> busyTimes = getBusyTimes(events, request.getAttendees());
+    List<TimeRange> goodTimes = new ArrayList<TimeRange>();
+    int meetingDuration = (int) request.getDuration();
+
+    // beginning of an available period
+    int goodStart = TimeRange.START_OF_DAY;
+
+    for (TimeRange busyRange : busyTimes) {
+      // end of an available period
+      int goodEnd = busyRange.start();
+
+      if (goodEnd > goodStart) {
+        TimeRange goodRange = TimeRange.fromStartEnd(goodStart, goodEnd, false);
+        if (goodRange.duration() >= meetingDuration) {
+          goodTimes.add(goodRange);
+        }
+      }
+
+      // only increment goodStart if it is earlier than the next ending period - takes care of
+      // nested
+      // events with the following format (don't want goodStart to go back in time):
+      // Events  :       |----A----|
+      //                   |--B--|
+      // Day     : |---------------------|
+      goodStart = Math.max(goodStart, busyRange.end());
+    }
+
+    // edge case for last time chunk
+    if (TimeRange.END_OF_DAY - goodStart > meetingDuration) {
+      goodTimes.add(TimeRange.fromStartEnd(goodStart, TimeRange.END_OF_DAY, true));
+    }
+
+    return goodTimes;
   }
 }
