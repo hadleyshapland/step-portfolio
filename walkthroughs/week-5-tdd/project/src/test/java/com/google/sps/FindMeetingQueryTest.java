@@ -386,7 +386,7 @@ public final class FindMeetingQueryTest {
   @Test
   public void justEnoughRoomOptional() {
     // Scenario 3: Have one person, but make it so that there is just enough room at one point in
-    // the day to have the meeting. Add an optional person who should be ignored because 
+    // the day to have the meeting. Add an optional person who should be ignored because
     // considering their schedule would result in a time slot smaller than requested time.
 
     Collection<Event> events =
