@@ -40,8 +40,7 @@ public final class FindMeetingQuery {
       return Arrays.asList();
     }
 
-    int meetingDuration = (int) request.getDuration();
-    return getGoodTimes(getBusyTimes(events, attendeesRequested), meetingDuration);
+    return getGoodTimes(events, request);
   }
 
   /**
@@ -73,17 +72,17 @@ public final class FindMeetingQuery {
    * Returns a List with all the TimeRanges between the busyTimes that are greater or equal to the
    * requested meeting duration.
    */
-  private static List<TimeRange> getGoodTimes(List<TimeRange> busyTimes, int meetingDuration) {
+  private static List<TimeRange> getGoodTimes(Collection<Event> events, MeetingRequest request) {
+    List<TimeRange> busyTimes = getBusyTimes(events, request.getAttendees());
     List<TimeRange> goodTimes = new ArrayList<TimeRange>();
+    int meetingDuration = (int) request.getDuration();
 
     // beginning of an available period
     int goodStart = TimeRange.START_OF_DAY;
 
-    // end of an available period
-    int goodEnd = TimeRange.END_OF_DAY;
-
     for (TimeRange busyRange : busyTimes) {
-      goodEnd = busyRange.start();
+      // end of an available period
+      int goodEnd = busyRange.start();
 
       if (goodEnd > goodStart) {
         TimeRange goodRange = TimeRange.fromStartEnd(goodStart, goodEnd, false);
