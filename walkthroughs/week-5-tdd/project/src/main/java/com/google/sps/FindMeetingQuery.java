@@ -15,10 +15,8 @@
 package com.google.sps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -37,8 +35,8 @@ public final class FindMeetingQuery {
     int meetingDuration = (int) request.getDuration();
     List<TimeRange> combinedTimes = getGoodTimes(events, attendeesCombined, meetingDuration);
 
-    if(attendeesRequired.isEmpty() || !combinedTimes.isEmpty()) {
-        return combinedTimes;
+    if (attendeesRequired.isEmpty() || !combinedTimes.isEmpty()) {
+      return combinedTimes;
     }
 
     List<TimeRange> requiredTimes = getGoodTimes(events, attendeesRequired, meetingDuration);
@@ -74,7 +72,8 @@ public final class FindMeetingQuery {
    * Returns a List with all the TimeRanges between the busyTimes that are greater or equal to the
    * requested meeting duration.
    */
-  private static List<TimeRange> getGoodTimes(Collection<Event> events, Collection<String> attendees, int meetingDuration) {
+  private static List<TimeRange> getGoodTimes(
+      Collection<Event> events, Collection<String> attendees, int meetingDuration) {
     List<TimeRange> busyTimes = getBusyTimes(events, attendees);
     List<TimeRange> goodTimes = new ArrayList<TimeRange>();
 
