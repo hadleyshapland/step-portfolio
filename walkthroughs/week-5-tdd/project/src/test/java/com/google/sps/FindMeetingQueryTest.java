@@ -317,8 +317,7 @@ public final class FindMeetingQueryTest {
   @Test
   public void optionalIsBusy() {
     // Scenario 1: Each person has different events. We should see three options because each person
-    // has
-    // split the restricted times & the optional attendee is busy all day.
+    // has split the restricted times & the optional attendee is busy all day.
 
     Collection<Event> events =
         Arrays.asList(
@@ -353,8 +352,7 @@ public final class FindMeetingQueryTest {
   @Test
   public void optionalHasTime() {
     // Scenario 2: Each person has different events. We should see two options because each person
-    // has
-    // split the restricted times & the optional attendee is able to attend.
+    // has split the restricted times & the optional attendee is able to attend.
 
     Collection<Event> events =
         Arrays.asList(
@@ -388,10 +386,8 @@ public final class FindMeetingQueryTest {
   @Test
   public void justEnoughRoomOptional() {
     // Scenario 3: Have one person, but make it so that there is just enough room at one point in
-    // the day to
-    // have the meeting. Add an optional person who should be ignored because considering their
-    // schedule would
-    // result in a time slot smaller than requested time
+    // the day to have the meeting. Add an optional person who should be ignored because 
+    // considering their schedule would result in a time slot smaller than requested time.
 
     Collection<Event> events =
         Arrays.asList(
