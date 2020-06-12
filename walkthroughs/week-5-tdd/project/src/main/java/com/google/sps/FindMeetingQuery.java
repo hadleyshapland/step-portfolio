@@ -18,14 +18,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public final class FindMeetingQuery {
   /**
    * This algorithm creates a List of all the times at least one attendee is busy, then uses that
-   * List to find all the times that everyone is available The worst-case runtime is O(events*attendees)
+   * List to find all the times that everyone is available The worst-case runtime is
+   * O(events*attendees)
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequested = request.getAttendees();
@@ -44,7 +44,10 @@ public final class FindMeetingQuery {
     return getGoodTimes(getBusyTimes(events, attendeesRequested), meetingDuration);
   }
 
-  /** Returns a sorted List (earliest to latest by start time) with all the times that requested attendees have conflicts. */
+  /**
+   * Returns a sorted List (earliest to latest by start time) with all the times that requested
+   * attendees have conflicts.
+   */
   private static List<TimeRange> getBusyTimes(
       Collection<Event> events, Collection<String> attendees) {
     List<TimeRange> busyTimes = new ArrayList<TimeRange>();
@@ -55,10 +58,10 @@ public final class FindMeetingQuery {
 
       // loop to see if any attendees in conflictEvent are requested attendees
       for (String attendee : busyAttendees) {
-          if(attendees.contains(attendee)) {
-              busyTimes.add(conflictEvent.getWhen());
-              break;
-          }
+        if (attendees.contains(attendee)) {
+          busyTimes.add(conflictEvent.getWhen());
+          break;
+        }
       }
     }
 
@@ -89,7 +92,8 @@ public final class FindMeetingQuery {
         }
       }
 
-      // only increment goodStart if it is earlier than the next ending period - takes care of nested
+      // only increment goodStart if it is earlier than the next ending period - takes care of
+      // nested
       // events with the following format (don't want goodStart to go back in time):
       // Events  :       |----A----|
       //                   |--B--|
@@ -98,8 +102,8 @@ public final class FindMeetingQuery {
     }
 
     // edge case for last time chunk
-    if(TimeRange.END_OF_DAY - goodStart > meetingDuration) {
-        goodTimes.add(TimeRange.fromStartEnd(goodStart, TimeRange.END_OF_DAY, true));
+    if (TimeRange.END_OF_DAY - goodStart > meetingDuration) {
+      goodTimes.add(TimeRange.fromStartEnd(goodStart, TimeRange.END_OF_DAY, true));
     }
 
     return goodTimes;
