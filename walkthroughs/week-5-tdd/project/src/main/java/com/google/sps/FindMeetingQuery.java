@@ -15,7 +15,6 @@
 package com.google.sps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -28,19 +27,20 @@ public final class FindMeetingQuery {
    * O(events*attendees)
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    Collection<String> attendeesRequested = request.getAttendees();
+    Collection<String> attendeesRequired = request.getAttendees();
+    Collection<String> attendeesCombined = new ArrayList<String>();
+    attendeesCombined.addAll(attendeesRequired);
+    attendeesCombined.addAll(request.getOptionalAttendees());
 
-    // check for no attendees
-    if (attendeesRequested.isEmpty()) {
-      return Arrays.asList(TimeRange.WHOLE_DAY);
+    int meetingDuration = (int) request.getDuration();
+    List<TimeRange> combinedTimes = getGoodTimes(events, attendeesCombined, meetingDuration);
+
+    if (attendeesRequired.isEmpty() || !combinedTimes.isEmpty()) {
+      return combinedTimes;
     }
 
-    // check duration of meeting request
-    if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
-      return Arrays.asList();
-    }
-
-    return getGoodTimes(events, request);
+    List<TimeRange> requiredTimes = getGoodTimes(events, attendeesRequired, meetingDuration);
+    return requiredTimes;
   }
 
   /**
@@ -72,10 +72,10 @@ public final class FindMeetingQuery {
    * Returns a List with all the TimeRanges between the busyTimes that are greater or equal to the
    * requested meeting duration.
    */
-  private static List<TimeRange> getGoodTimes(Collection<Event> events, MeetingRequest request) {
-    List<TimeRange> busyTimes = getBusyTimes(events, request.getAttendees());
+  private static List<TimeRange> getGoodTimes(
+      Collection<Event> events, Collection<String> attendees, int meetingDuration) {
+    List<TimeRange> busyTimes = getBusyTimes(events, attendees);
     List<TimeRange> goodTimes = new ArrayList<TimeRange>();
-    int meetingDuration = (int) request.getDuration();
 
     // beginning of an available period
     int goodStart = TimeRange.START_OF_DAY;
