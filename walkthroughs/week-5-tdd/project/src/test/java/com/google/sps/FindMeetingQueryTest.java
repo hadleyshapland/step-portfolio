@@ -315,7 +315,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void optionalIsBusy() {
+  public void optionalAttendeeIsBusy() {
     // Scenario 1: Each person has different events. We should see three options because each person
     // has split the restricted times & the optional attendee is busy all day.
 
@@ -350,7 +350,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void optionalHasTime() {
+  public void optionalAttendeeHasTime() {
     // Scenario 2: Each person has different events. We should see two options because each person
     // has split the restricted times & the optional attendee is able to attend.
 
