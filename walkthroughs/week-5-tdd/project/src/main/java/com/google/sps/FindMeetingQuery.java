@@ -17,6 +17,7 @@ package com.google.sps;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,9 +29,10 @@ public final class FindMeetingQuery {
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequired = request.getAttendees();
+    Collection<String> attendeesOptional = request.getOptionalAttendees();
     Collection<String> attendeesCombined = new ArrayList<String>();
     attendeesCombined.addAll(attendeesRequired);
-    attendeesCombined.addAll(request.getOptionalAttendees());
+    attendeesCombined.addAll(attendeesOptional);
 
     int meetingDuration = (int) request.getDuration();
     List<TimeRange> combinedTimes = getGoodTimes(events, attendeesCombined, meetingDuration);
@@ -39,8 +41,73 @@ public final class FindMeetingQuery {
       return combinedTimes;
     }
 
-    List<TimeRange> requiredTimes = getGoodTimes(events, attendeesRequired, meetingDuration);
-    return requiredTimes;
+    //optimization algorithm
+    //start with max number of optional attendees, and if no times work it will try one less
+    int numberOptional = attendeesOptional.size();
+    List<TimeRange> optimalTime = optimizeTime(numberOptional, events, attendeesRequired, attendeesOptional, meetingDuration);
+    return optimalTime;
+
+  }
+
+//TODO ADD DESCRIPTION
+  private static List<TimeRange> optimizeTime(int numOptional, Collection<Event> events, 
+  Collection<String> attendeesRequired, Collection<String> attendeesOptionalCollection, int meetingDuration) {
+
+    // change optional attendee collection into list
+    List<String> attendeesOptional = new ArrayList<String>(attendeesOptionalCollection);
+      
+      if(numOptional == 0) {
+          return getGoodTimes(events, attendeesRequired, meetingDuration);
+      }
+
+      List<List<String>> allOptionalCombos = new LinkedList<List<String>>();
+      allOptionalCombos.addAll(combination(attendeesOptional, numOptional));
+
+      
+      for(List<String> attendeeOptionalCombo : allOptionalCombos) {
+          List<String> attendeesCombined   = new ArrayList<String>();
+          attendeesCombined.addAll(attendeesRequired);
+          attendeesCombined.addAll(attendeeOptionalCombo);
+
+          List<TimeRange> potentialTimes = getGoodTimes(events, attendeesCombined, meetingDuration);
+          if(!potentialTimes.isEmpty()) {
+              return potentialTimes;
+          }
+      }
+
+      return optimizeTime(numOptional - 1, events, attendeesRequired, attendeesOptionalCollection, meetingDuration);
+   }
+
+  //recursive implementation to generate all combinations of attendees of a given size
+  private static List<List<String>> combination(List<String> attendees, int size) {
+
+      if(size == 0) {
+          return Collections.singletonList(Collections.<String> emptyList());
+      }
+
+      if(attendees.isEmpty()) {
+          return Collections.emptyList();
+      }
+
+      List<List<String>> combination = new LinkedList<List<String>>();
+
+
+      String actual = attendees.iterator().next();
+
+      List<String> subSet = new LinkedList<String>(attendees);
+      subSet.remove(actual);
+
+      List<List<String>> subSetCombination = combination(subSet, size - 1);
+
+      for (List<String> set : subSetCombination) {
+        List<String> newSet = new LinkedList<String>(set);
+        newSet.add(0, actual);
+        combination.add(newSet);
+    }
+
+    combination.addAll(combination(subSet, size));
+
+    return combination;
   }
 
   /**
