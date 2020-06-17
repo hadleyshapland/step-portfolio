@@ -480,7 +480,6 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-
   @Test
   public void oneOptionalHasTime() {
     // Two mandatory and two optional attendees. There is no time that works for all four,
@@ -523,7 +522,8 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void fourOptionalAttendees() {
-    // Two mandatory and four optional attendees. There is no time that works for all 6, but the optimized
+    // Two mandatory and four optional attendees. There is no time that works for all 6, but the
+    // optimized
     // time would allow two of the optional attendees to fit in
 
     Collection<Event> events =
@@ -547,7 +547,7 @@ public final class FindMeetingQueryTest {
             new Event(
                 "Event 5",
                 TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
-                Arrays.asList(PERSON_E)),    
+                Arrays.asList(PERSON_E)),
             new Event(
                 "Event 6",
                 TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0930AM, false),
@@ -563,8 +563,7 @@ public final class FindMeetingQueryTest {
 
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected =
-        Arrays.asList(
-            TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
+        Arrays.asList(TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
 
     Assert.assertEquals(expected, actual);
   }
