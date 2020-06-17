@@ -42,14 +42,25 @@ public final class FindMeetingQuery {
     }
 
     // optimization algorithm
-    // start with max number of optional attendees, and if no times work it will try one less
-    int numberOptional = attendeesOptional.size();
+    // start with one less than max number of optional attendees, and if no times work it will try one less
+    int numberOptional = attendeesOptional.size() - 1;
+
+    //in case there is only one optional attendee
+    if(numberOptional < 0) {
+        numberOptional = 0;
+    }
+
     List<TimeRange> optimalTime =
         optimizeTime(numberOptional, events, attendeesRequired, attendeesOptional, meetingDuration);
     return optimalTime;
   }
 
-  // TODO ADD DESCRIPTION
+  /**
+  * Function that tests all possible combinations of a given number of optional attendees (numOptional)
+  * and returns the times that work. If no times work, it recursively calls itself with a smaller 
+  * number of optional attendees until there are times that work. If times don't work with any
+  * optional attendees, it will return the times for only the required attendees.
+  */
   private static List<TimeRange> optimizeTime(
       int numOptional,
       Collection<Event> events,
@@ -60,10 +71,11 @@ public final class FindMeetingQuery {
     // change optional attendee collection into list
     List<String> attendeesOptional = new ArrayList<String>(attendeesOptionalCollection);
 
-    if (numOptional == 0) {
+    if (numOptional <= 0) { //no optional attendees work
       return getGoodTimes(events, attendeesRequired, meetingDuration);
     }
 
+    //add all possible combinations of size numOptional to allOptionalCombos using helper method combination()
     List<List<String>> allOptionalCombos = new LinkedList<List<String>>();
     allOptionalCombos.addAll(combination(attendeesOptional, numOptional));
 
@@ -82,9 +94,11 @@ public final class FindMeetingQuery {
         numOptional - 1, events, attendeesRequired, attendeesOptionalCollection, meetingDuration);
   }
 
-  // recursive implementation to generate all combinations of attendees of a given size
+  /**
+  * Given a List and a size, returns a List of all the possible combinations of size (order within combinations
+  * does not matter)
+  */
   private static List<List<String>> combination(List<String> attendees, int size) {
-
     if (size == 0) {
       return Collections.singletonList(Collections.<String>emptyList());
     }
@@ -109,7 +123,6 @@ public final class FindMeetingQuery {
     }
 
     combination.addAll(combination(subSet, size));
-
     return combination;
   }
 
