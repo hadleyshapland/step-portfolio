@@ -568,11 +568,10 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-
   @Test
   public void twoOptionalCouldWork() {
     // Two optional attendees that could both fit with the mandatory schedule, but not together.
-    // The algorithm doesn't specify which schedule should be returned, so this test just 
+    // The algorithm doesn't specify which schedule should be returned, so this test just
     // verifies that the correct number of time slots is returned.
 
     Collection<Event> events =
@@ -590,16 +589,15 @@ public final class FindMeetingQueryTest {
                 TimeRange.fromStartEnd(TIME_0830AM, TimeRange.END_OF_DAY, true),
                 Arrays.asList(PERSON_C)));
 
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
 
     request.addOptionalAttendee(PERSON_B);
     request.addOptionalAttendee(PERSON_C);
 
     Collection<TimeRange> actual = query.query(events, request);
 
-    //make sure only one time slot is returned (if it returns 2, that means that it 
-    //didn't add either of the optional attendees).
+    // make sure only one time slot is returned (if it returns 2, that means that it
+    // didn't add either of the optional attendees).
     Assert.assertEquals(1, actual.size());
   }
 }
