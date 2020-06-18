@@ -22,10 +22,9 @@ import java.util.Set;
 
 public final class FindMeetingQuery {
   /**
-   * This algorithm returns a list of all the times that required and optional attendees
-   * are free. If no time exists for all optional and mandatory attendees, it returns the 
-   * times that allow mandatory attendees and the greatest possible number of optional 
-   * attendees to attend. 
+   * This algorithm returns a list of all the times that required and optional attendees are free.
+   * If no time exists for all optional and mandatory attendees, it returns the times that allow
+   * mandatory attendees and the greatest possible number of optional attendees to attend.
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequired = request.getAttendees();
