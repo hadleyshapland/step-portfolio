@@ -17,15 +17,15 @@ package com.google.sps;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 public final class FindMeetingQuery {
   /**
-   * This algorithm creates a List of all the times at least one attendee is busy, then uses that
-   * List to find all the times that everyone is available The worst-case runtime is
-   * O(events*attendees)
+   * This algorithm returns a list of all the times that required and optional attendees
+   * are free. If no time exists for all optional and mandatory attendees, it returns the 
+   * times that allow mandatory attendees and the greatest possible number of optional 
+   * attendees to attend. 
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     Collection<String> attendeesRequired = request.getAttendees();
@@ -44,12 +44,7 @@ public final class FindMeetingQuery {
     // optimization algorithm
     // start with one less than max number of optional attendees, and if no times work it will try
     // one less
-    int numberOptional = attendeesOptional.size() - 1;
-
-    // in case there is only one optional attendee
-    if (numberOptional < 0) {
-      numberOptional = 0;
-    }
+    int numberOptional = Math.max(0, attendeesOptional.size() - 1);
 
     List<TimeRange> optimalTime =
         optimizeTime(numberOptional, events, attendeesRequired, attendeesOptional, meetingDuration);
@@ -78,8 +73,7 @@ public final class FindMeetingQuery {
 
     // add all possible combinations of size numOptional to allOptionalCombos using helper method
     // combination()
-    List<List<String>> allOptionalCombos = new LinkedList<List<String>>();
-    allOptionalCombos.addAll(combination(attendeesOptional, numOptional));
+    List<List<String>> allOptionalCombos = combination(attendeesOptional, numOptional);
 
     for (List<String> attendeeOptionalCombo : allOptionalCombos) {
       List<String> attendeesCombined = new ArrayList<String>();
@@ -109,17 +103,17 @@ public final class FindMeetingQuery {
       return Collections.emptyList();
     }
 
-    List<List<String>> combination = new LinkedList<List<String>>();
+    List<List<String>> combination = new ArrayList<List<String>>();
 
     String actual = attendees.iterator().next();
 
-    List<String> subSet = new LinkedList<String>(attendees);
+    List<String> subSet = new ArrayList<String>(attendees);
     subSet.remove(actual);
 
     List<List<String>> subSetCombination = combination(subSet, size - 1);
 
     for (List<String> set : subSetCombination) {
-      List<String> newSet = new LinkedList<String>(set);
+      List<String> newSet = new ArrayList<String>(set);
       newSet.add(0, actual);
       combination.add(newSet);
     }
