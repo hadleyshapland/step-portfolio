@@ -17,6 +17,7 @@ package com.google.sps;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -106,13 +107,16 @@ public final class FindMeetingQuery {
 
     String actual = attendees.iterator().next();
 
-    List<String> subSet = new ArrayList<String>(attendees);
-    subSet.remove(actual);
+    List<String> subSet = new LinkedList<String>(attendees);
+    subSet.remove(0);
 
+    // Recursive call to combination with (size - 1), this will continue to get smaller
+    // combinations until size == 0, and then append all combinations to the first String 
+    // from the original List (variable 'actual').
     List<List<String>> subSetCombination = combination(subSet, size - 1);
 
     for (List<String> set : subSetCombination) {
-      List<String> newSet = new ArrayList<String>(set);
+      List<String> newSet = new LinkedList<String>(set);
       newSet.add(0, actual);
       combination.add(newSet);
     }

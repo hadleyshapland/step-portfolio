@@ -523,8 +523,7 @@ public final class FindMeetingQueryTest {
   @Test
   public void fourOptionalAttendees() {
     // Two mandatory and four optional attendees. There is no time that works for all 6, but the
-    // optimized
-    // time would allow two of the optional attendees to fit in
+    // optimized time would allow two of the optional attendees to fit in.
 
     Collection<Event> events =
         Arrays.asList(
