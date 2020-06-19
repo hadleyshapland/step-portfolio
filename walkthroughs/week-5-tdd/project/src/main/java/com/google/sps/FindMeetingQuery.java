@@ -111,7 +111,7 @@ public final class FindMeetingQuery {
     subSet.remove(0);
 
     // Recursive call to combination with (size - 1), this will continue to get smaller
-    // combinations until size == 0, and then append all combinations to the first String 
+    // combinations until size == 0, and then append all combinations to the first String
     // from the original List (variable 'actual').
     List<List<String>> subSetCombination = combination(subSet, size - 1);
 
